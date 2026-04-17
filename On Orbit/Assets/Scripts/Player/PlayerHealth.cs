@@ -6,11 +6,12 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
 
     private int currentHealth;
+    private UIController uiController;
 
     private void Awake()
     {
         currentHealth = maxHealth;
-        Debug.Log($"Vida inicial del jugador: {currentHealth}");
+        uiController = FindFirstObjectByType<UIController>();
     }
 
     public void TakeDamage(int damageAmount)
@@ -27,7 +28,11 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("El jugador ha muerto.");
-        Destroy(gameObject);
+        if (uiController != null)
+        {
+            uiController.HandlePlayerDefeat();
+        }
+
+        gameObject.SetActive(false);
     }
 }
