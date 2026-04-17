@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-public class UIController : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     [Header("Panels")]
     [SerializeField] private CanvasGroup winPanel;

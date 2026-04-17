@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private UIController uiController;
+    private UIManager uiManager;
     private bool hasWon = false;
 
     private void Awake()
     {
-        uiController = FindFirstObjectByType<UIController>();
+        uiManager = FindFirstObjectByType<UIManager>();
     }
 
     private void Update()
@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
         {
             hasWon = true;
 
-            if (uiController != null)
+            if (uiManager != null)
             {
-                uiController.HandlePlayerVictory();
+                uiManager.HandlePlayerVictory();
             }
         }
     }

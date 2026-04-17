@@ -6,12 +6,12 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
 
     private int currentHealth;
-    private UIController uiController;
+    private UIManager uiManager;
 
     private void Awake()
     {
         currentHealth = maxHealth;
-        uiController = FindFirstObjectByType<UIController>();
+        uiManager = FindFirstObjectByType<UIManager>();
     }
 
     public void TakeDamage(int damageAmount)
@@ -28,9 +28,9 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        if (uiController != null)
+        if (uiManager != null)
         {
-            uiController.HandlePlayerDefeat();
+            uiManager.HandlePlayerDefeat();
         }
 
         gameObject.SetActive(false);
