@@ -1,27 +1,60 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class EnemyBullet : MonoBehaviour
 {
-    [Header("Bullet Settings")]
+    [Header("Runtime Bullet Settings")]
     [SerializeField] private float speed = 8f;
     [SerializeField] private float lifeTime = 5f;
     [SerializeField] private int damage = 10;
 
+    [Header("References")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     private Rigidbody2D rb;
+    private IObjectPool<EnemyBullet> pool;
+    private bool isActiveBullet = false;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
     }
 
-    private void Start()
+    public void SetPool(IObjectPool<EnemyBullet> bulletPool)
     {
-        rb.linearVelocity = Vector2.down * speed;
-        Destroy(gameObject, lifeTime);
+        pool = bulletPool;
+    }
+
+    public void Launch(EnemyData enemyData, Vector2 direction)
+    {
+        if (enemyData != null)
+        {
+            speed = enemyData.bulletSpeed;
+            lifeTime = enemyData.bulletLifeTime;
+            damage = enemyData.bulletDamage;
+
+            if (spriteRenderer != null && enemyData.bulletSprite != null)
+            {
+                spriteRenderer.sprite = enemyData.bulletSprite;
+            }
+        }
+
+        isActiveBullet = true;
+        rb.linearVelocity = direction.normalized * speed;
+
+        CancelInvoke();
+        Invoke(nameof(ReturnToPool), lifeTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!isActiveBullet) return;
+
         if (other.CompareTag("Player"))
         {
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
@@ -31,7 +64,25 @@ public class EnemyBullet : MonoBehaviour
                 playerHealth.TakeDamage(damage);
             }
 
-            Destroy(gameObject);
+            ReturnToPool();
+        }
+    }
+
+    private void ReturnToPool()
+    {
+        if (!isActiveBullet) return;
+
+        isActiveBullet = false;
+        rb.linearVelocity = Vector2.zero;
+        CancelInvoke();
+
+        if (pool != null)
+        {
+            pool.Release(this);
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 }

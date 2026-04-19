@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class PlayerBullet : MonoBehaviour
 {
@@ -8,20 +9,32 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField] private int damage = 10;
 
     private Rigidbody2D rb;
+    private IObjectPool<PlayerBullet> pool;
+    private bool isActiveBullet;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
+    public void SetPool(IObjectPool<PlayerBullet> bulletPool)
     {
-        rb.linearVelocity = Vector2.up * speed;
-        Destroy(gameObject, lifeTime);
+        pool = bulletPool;
+    }
+
+    public void Launch(Vector2 direction)
+    {
+        isActiveBullet = true;
+        rb.linearVelocity = direction.normalized * speed;
+
+        CancelInvoke();
+        Invoke(nameof(ReturnToPool), lifeTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!isActiveBullet) return;
+
         if (other.CompareTag("Enemy"))
         {
             Enemy enemy = other.GetComponent<Enemy>();
@@ -30,8 +43,22 @@ public class PlayerBullet : MonoBehaviour
             {
                 enemy.TakeDamage(damage);
             }
-            
-            Destroy(gameObject);
+
+            ReturnToPool();
         }
+    }
+
+    private void ReturnToPool()
+    {
+        if (!isActiveBullet) return;
+
+        isActiveBullet = false;
+        rb.linearVelocity = Vector2.zero;
+        CancelInvoke();
+
+        if (pool != null)
+            pool.Release(this);
+        else
+            gameObject.SetActive(false);
     }
 }

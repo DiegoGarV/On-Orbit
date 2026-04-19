@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 6998893686366837370}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8278372, y: 3.1972032, z: 0}
+  m_LocalPosition: {x: -2, y: 5.51, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -183,14 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6e8c2a27b5ec5418258f4b44a6282c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  maxHealth: 100
-  firePoint: {fileID: 7462205379411138308}
+  enemyData: {fileID: 11400000, guid: 42c4043065263f94a94a32621d7ae677, type: 2}
+  spriteRenderer: {fileID: 4497028980612638965}
+  centerFirePoint: {fileID: 7462205379411138308}
+  leftFirePoint: {fileID: 0}
+  rightFirePoint: {fileID: 0}
   enemyBulletPrefab: {fileID: 2123492820181518368, guid: 66e7f8fef8521ba47b67f6f12411f292, type: 3}
-  localBattleOffset: {x: 0, y: 0, z: 0}
-  entrySpeed: 4
-  horizontalAmplitude: 1.2
-  horizontalSpeed: 1.5
-  patternStartDelay: 0
-  burstCooldown: 1.5
-  shotsPerBurst: 3
-  timeBetweenShots: 0.15

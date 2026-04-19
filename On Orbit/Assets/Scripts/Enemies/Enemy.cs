@@ -3,26 +3,15 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Stats")]
-    [SerializeField] private int maxHealth = 100;
+    [Header("Data")]
+    [SerializeField] private EnemyData enemyData;
 
     [Header("References")]
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject enemyBulletPrefab;
-
-    [Header("Entry Movement")]
-    [SerializeField] private Vector3 localBattleOffset = Vector3.zero;
-    [SerializeField] private float entrySpeed = 4f;
-
-    [Header("Formation Movement")]
-    [SerializeField] private float horizontalAmplitude = 1.2f;
-    [SerializeField] private float horizontalSpeed = 1.5f;
-
-    [Header("Attack Pattern")]
-    [SerializeField] private float patternStartDelay = 0f;
-    [SerializeField] private float burstCooldown = 1.5f;
-    [SerializeField] private int shotsPerBurst = 3;
-    [SerializeField] private float timeBetweenShots = 0.15f;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform centerFirePoint;
+    [SerializeField] private Transform leftFirePoint;
+    [SerializeField] private Transform rightFirePoint;
+    [SerializeField] private EnemyBulletPool enemyBulletPool;
 
     private int currentHealth;
     private Vector3 startBattlePosition;
@@ -31,37 +20,64 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        currentHealth = maxHealth;
-        startBattlePosition = transform.position + localBattleOffset;
+        if (enemyData == null)
+        {
+            Debug.LogError($"EnemyData no está asignado en {gameObject.name}");
+            return;
+        }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        ApplyData();
     }
 
     private void Start()
     {
+        if (enemyData == null)
+            return;
+
         StartCoroutine(BattleRoutine());
     }
 
     private void Update()
     {
-        if (!inBattlePosition || !canOscillate)
+        if (enemyData == null || !inBattlePosition || !canOscillate)
             return;
 
-        float offsetX = Mathf.PingPong(Time.time * horizontalSpeed, horizontalAmplitude * 2f) - horizontalAmplitude;
+        float offsetX = Mathf.PingPong(
+            Time.time * enemyData.horizontalSpeed,
+            enemyData.horizontalAmplitude * 2f
+        ) - enemyData.horizontalAmplitude;
 
         Vector3 newPosition = startBattlePosition + new Vector3(offsetX, 0f, 0f);
         transform.position = newPosition;
     }
 
+    private void ApplyData()
+    {
+        currentHealth = enemyData.maxHealth;
+        startBattlePosition = transform.position + enemyData.localBattleOffset;
+
+        if (spriteRenderer != null && enemyData.enemySprite != null)
+        {
+            spriteRenderer.sprite = enemyData.enemySprite;
+        }
+    }
+
     private IEnumerator BattleRoutine()
     {
-        if (patternStartDelay > 0f)
-            yield return new WaitForSeconds(patternStartDelay);
+        if (enemyData.patternStartDelay > 0f)
+            yield return new WaitForSeconds(enemyData.patternStartDelay);
 
         while (Vector3.Distance(transform.position, startBattlePosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 startBattlePosition,
-                entrySpeed * Time.deltaTime
+                enemyData.entrySpeed * Time.deltaTime
             );
 
             yield return null;
@@ -77,20 +93,53 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             yield return StartCoroutine(FireBurst());
-            yield return new WaitForSeconds(burstCooldown);
+            yield return new WaitForSeconds(enemyData.burstCooldown);
         }
     }
 
     private IEnumerator FireBurst()
     {
-        if (firePoint == null || enemyBulletPrefab == null)
+        if (enemyBulletPool == null)
             yield break;
 
-        for (int i = 0; i < shotsPerBurst; i++)
+        for (int i = 0; i < enemyData.shotsPerBurst; i++)
         {
-            Instantiate(enemyBulletPrefab, firePoint.position, Quaternion.identity);
-            yield return new WaitForSeconds(timeBetweenShots);
+            FireShot();
+            yield return new WaitForSeconds(enemyData.timeBetweenShots);
         }
+    }
+
+    private void FireShot()
+    {
+        switch (enemyData.shotType)
+        {
+            case EnemyShotType.Single:
+                if (centerFirePoint != null)
+                {
+                    SpawnBullet(centerFirePoint);
+                }
+                break;
+
+            case EnemyShotType.Double:
+                if (leftFirePoint != null)
+                {
+                    SpawnBullet(leftFirePoint);
+                }
+
+                if (rightFirePoint != null)
+                {
+                    SpawnBullet(rightFirePoint);
+                }
+                break;
+        }
+    }
+
+    private void SpawnBullet(Transform firePoint)
+    {
+        EnemyBullet bullet = enemyBulletPool.Pool.Get();
+        bullet.transform.position = firePoint.position;
+        bullet.transform.rotation = Quaternion.identity;
+        bullet.Launch(enemyData, Vector2.down);
     }
 
     public void TakeDamage(int damageAmount)
@@ -113,15 +162,17 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Vector3 battlePosition = transform.position + localBattleOffset;
+        if (enemyData == null)
+            return;
 
-        // Posición de batalla
+        Vector3 battlePosition = transform.position + enemyData.localBattleOffset;
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(battlePosition, 0.15f);
 
-        // Movimiento horizontal
-        Vector3 leftPoint = battlePosition + Vector3.left * horizontalAmplitude;
-        Vector3 rightPoint = battlePosition + Vector3.right * horizontalAmplitude;
+        Vector3 leftPoint = battlePosition + Vector3.left * enemyData.horizontalAmplitude;
+        Vector3 rightPoint = battlePosition + Vector3.right * enemyData.horizontalAmplitude;
+
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(leftPoint, rightPoint);
         Gizmos.DrawWireSphere(leftPoint, 0.08f);

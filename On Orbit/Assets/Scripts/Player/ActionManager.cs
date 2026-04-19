@@ -14,7 +14,7 @@ public class ActionManager : MonoBehaviour
     [Header("Shooting")]
     [SerializeField] private Transform leftFirePoint;
     [SerializeField] private Transform rightFirePoint;
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private PlayerBulletPool playerBulletPool;
     [SerializeField] private float fireCooldown = 0.15f;
 
     private Rigidbody2D rb;
@@ -79,13 +79,21 @@ public class ActionManager : MonoBehaviour
 
         fireTimer = fireCooldown;
 
-        if (bulletPrefab == null || leftFirePoint == null || rightFirePoint == null)
+        if (playerBulletPool == null || leftFirePoint == null || rightFirePoint == null)
         {
-            Debug.Log("Falta asignar BulletPrefab o uno de los FirePoints.");
+            Debug.Log("Falta asignar PlayerBulletPool o uno de los FirePoints.");
             return;
         }
 
-        Instantiate(bulletPrefab, leftFirePoint.position, leftFirePoint.rotation);
-        Instantiate(bulletPrefab, rightFirePoint.position, rightFirePoint.rotation);
+        SpawnBullet(leftFirePoint);
+        SpawnBullet(rightFirePoint);
+    }
+
+    private void SpawnBullet(Transform firePoint)
+    {
+        PlayerBullet bullet = playerBulletPool.Pool.Get();
+        bullet.transform.position = firePoint.position;
+        bullet.transform.rotation = Quaternion.identity;
+        bullet.Launch(Vector2.up);
     }
 }
