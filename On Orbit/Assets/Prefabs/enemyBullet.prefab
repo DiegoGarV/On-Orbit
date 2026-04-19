@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8217234536245036982}
   - component: {fileID: 6590824015313607779}
   m_Layer: 8
-  m_Name: evilRobotBullet
+  m_Name: enemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0dc4146732d9c46a1bf6500067279a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBullet
-  speed: 8
-  lifeTime: 5
-  damage: 34
+  speed: 0
+  lifeTime: 0
+  damage: 0
+  spriteRenderer: {fileID: 0}

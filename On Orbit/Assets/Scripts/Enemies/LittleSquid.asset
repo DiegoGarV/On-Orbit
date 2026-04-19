@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7e3b71f963c9734db74bf7bbad2dd2d, type: 3}
-  m_Name: EvilRobot
+  m_Name: LittleSquid
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemySprite: {fileID: 4130640169021434097, guid: e31dc82838f984d4b96b36ca114603d9, type: 3}
-  bulletSprite: {fileID: -6270953770400647376, guid: f86cd8af4e9d7724c83ba2831397f297, type: 3}
-  maxHealth: 100
+  enemySprite: {fileID: -5099292496197868168, guid: c67bad2b89306b840bc1de7157efe256, type: 3}
+  bulletSprite: {fileID: 8288426215254106694, guid: a5d85336dc9c6b343ab9bc1a261e69b7, type: 3}
+  maxHealth: 200
   bulletDamage: 34
   bulletSpeed: 8
   bulletLifeTime: 5
   entrySpeed: 4
-  horizontalAmplitude: 0.6
-  horizontalSpeed: 0.5
+  horizontalAmplitude: 2
+  horizontalSpeed: 1.5
   burstCooldown: 1.5
-  shotsPerBurst: 3
-  timeBetweenShots: 0.15
+  shotsPerBurst: 8
+  timeBetweenShots: 0.2
   shotType: 0
