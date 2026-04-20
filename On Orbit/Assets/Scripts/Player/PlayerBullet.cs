@@ -7,12 +7,12 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField] private float speed = 12f;
     [SerializeField] private float lifeTime = 3f;
     [SerializeField] private int damage = 10;
-    
-    [SerializeField] private GameObject explosionPrefab;
 
     private Rigidbody2D rb;
     private IObjectPool<PlayerBullet> pool;
     private bool isActiveBullet;
+
+    private EnemyHitExplotionPool EnemyHitExplotionPool;
 
     private void Awake()
     {
@@ -22,6 +22,11 @@ public class PlayerBullet : MonoBehaviour
     public void SetPool(IObjectPool<PlayerBullet> bulletPool)
     {
         pool = bulletPool;
+    }
+
+    public void SetEnemyHitExplotionPool(EnemyHitExplotionPool explosionPool)
+    {
+        EnemyHitExplotionPool = explosionPool;
     }
 
     public void Launch(Vector2 direction)
@@ -46,18 +51,18 @@ public class PlayerBullet : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
 
-            SpawnHitExplosion(other.transform.position);
-
+            SpawnEnemyHitExplosion(transform.position);
             ReturnToPool();
         }
     }
 
-    private void SpawnHitExplosion(Vector3 spawnPosition)
+    private void SpawnEnemyHitExplosion(Vector3 spawnPosition)
     {
-        if (explosionPrefab == null)
+        if (EnemyHitExplotionPool == null)
             return;
 
-        Instantiate(explosionPrefab, spawnPosition, Quaternion.identity);
+        EnemyHitExplotion explosion = EnemyHitExplotionPool.Pool.Get();
+        explosion.PlayAt(spawnPosition);
     }
 
     private void ReturnToPool()

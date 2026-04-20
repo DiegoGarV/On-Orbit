@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5217089569075824440}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirePointRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8279404277009388770}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirePointLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,9 +74,9 @@ GameObject:
   - component: {fileID: 2205047948102025168}
   - component: {fileID: 3673370627559214471}
   - component: {fileID: 5329574088208382004}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: scarabShip
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

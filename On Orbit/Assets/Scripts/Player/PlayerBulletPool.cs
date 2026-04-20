@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 public class PlayerBulletPool : MonoBehaviour
 {
     [SerializeField] private PlayerBullet bulletPrefab;
+    [SerializeField] private EnemyHitExplotionPool EnemyHitExplotionPool;
     [SerializeField] private int defaultCapacity = 20;
     [SerializeField] private int maxSize = 100;
     [SerializeField] private bool collectionCheck = true;
@@ -30,6 +31,7 @@ public class PlayerBulletPool : MonoBehaviour
         PlayerBullet bullet = Instantiate(bulletPrefab, transform);
         bullet.gameObject.SetActive(false);
         bullet.SetPool(pool);
+        bullet.SetEnemyHitExplotionPool(EnemyHitExplotionPool);
         return bullet;
     }
 

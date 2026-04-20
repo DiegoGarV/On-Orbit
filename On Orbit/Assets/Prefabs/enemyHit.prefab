@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9142136886904632734}
   - component: {fileID: 4451451275194531675}
   - component: {fileID: 2134431707115265724}
-  - component: {fileID: 4286292060347814136}
+  - component: {fileID: 2433012464026644978}
   m_Layer: 0
   m_Name: enemyHit
   m_TagString: Untagged
@@ -115,7 +115,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4286292060347814136
+--- !u!114 &2433012464026644978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,7 +124,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5965615386285139431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 196d131b5ad91ff4e911afa826f6508e, type: 3}
+  m_Script: {fileID: 11500000, guid: ca9f22a14169b924e8fbc27c55ac7c46, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExplosionAutoDestroy
-  destroyDelay: 0.5
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitExplotion
+  duration: 0.4
+  animator: {fileID: 0}
