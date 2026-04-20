@@ -10,6 +10,7 @@ public class EnemyBullet : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject explosionPrefab;
 
     private Rigidbody2D rb;
     private IObjectPool<EnemyBullet> pool;
@@ -64,9 +65,20 @@ public class EnemyBullet : MonoBehaviour
                 playerHealth.TakeDamage(damage);
             }
 
+            SpawnHitExplosion(other.transform.position);
+
             ReturnToPool();
         }
     }
+
+    private void SpawnHitExplosion(Vector3 spawnPosition)
+    {
+        if (explosionPrefab == null)
+            return;
+
+        Instantiate(explosionPrefab, spawnPosition, Quaternion.identity);
+    }
+
 
     private void ReturnToPool()
     {

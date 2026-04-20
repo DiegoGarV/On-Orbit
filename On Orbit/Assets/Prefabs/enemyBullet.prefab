@@ -174,3 +174,4 @@ MonoBehaviour:
   lifeTime: 0
   damage: 0
   spriteRenderer: {fileID: 0}
+  explosionPrefab: {fileID: 3384808369517267252, guid: 95b1140341a3bb140bd6045fbb2c3322, type: 3}

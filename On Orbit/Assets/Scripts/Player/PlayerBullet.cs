@@ -7,6 +7,8 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField] private float speed = 12f;
     [SerializeField] private float lifeTime = 3f;
     [SerializeField] private int damage = 10;
+    
+    [SerializeField] private GameObject explosionPrefab;
 
     private Rigidbody2D rb;
     private IObjectPool<PlayerBullet> pool;
@@ -44,8 +46,18 @@ public class PlayerBullet : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
 
+            SpawnHitExplosion(other.transform.position);
+
             ReturnToPool();
         }
+    }
+
+    private void SpawnHitExplosion(Vector3 spawnPosition)
+    {
+        if (explosionPrefab == null)
+            return;
+
+        Instantiate(explosionPrefab, spawnPosition, Quaternion.identity);
     }
 
     private void ReturnToPool()
