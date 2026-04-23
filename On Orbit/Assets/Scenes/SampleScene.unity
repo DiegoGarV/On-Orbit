@@ -924,6 +924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 372115930}
   - component: {fileID: 372115929}
+  - component: {fileID: 372115931}
   - component: {fileID: 372115928}
   m_Layer: 0
   m_Name: AudioManager
@@ -948,6 +949,14 @@ MonoBehaviour:
   levelMusic: {fileID: 8300000, guid: 2c1c999ea6f2f9c4a889dfe3e2e4bdac, type: 3}
   victoryMusic: {fileID: 8300000, guid: c477524a1110b4040a22688a19956666, type: 3}
   defeatMusic: {fileID: 8300000, guid: 79428880477cda64ca5ba1456a45b6fa, type: 3}
+  sfxSource: {fileID: 372115931}
+  playerShootSFX: {fileID: 8300000, guid: 7c78154499c6be848b50074e8b8d9d36, type: 3}
+  playerHitSFX: {fileID: 8300000, guid: 6c8bc6f6a81c8ab46b623e7ee1ca2265, type: 3}
+  playerDeathSFX: {fileID: 8300000, guid: 21efb3e4a5856414cb8bd84066aaeae0, type: 3}
+  enemyShootSFX: {fileID: 8300000, guid: 728b45bd0db37e94eb6d69173a270799, type: 3}
+  enemyHitSFX: {fileID: 8300000, guid: 5e29e1087c0505341a213c8e6178e3d9, type: 3}
+  enemyDeathSFX: {fileID: 8300000, guid: b1f20053f94631449918d6e21bdec088, type: 3}
+  meteorAlertSFX: {fileID: 8300000, guid: abc4e0888ebe2144890a1c1229a9d2aa, type: 3}
 --- !u!82 &372115929
 AudioSource:
   m_ObjectHideFlags: 0
@@ -960,10 +969,10 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1060,6 +1069,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &372115931
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372115927}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!61 &379382889 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 2467830618593369395, guid: 382204dee4bc3c24084e6e2c0f298141, type: 3}
@@ -2406,7 +2512,7 @@ MonoBehaviour:
   - {fileID: 666022402}
   - {fileID: 1663999323}
   - {fileID: 1452647152}
-  finalHeartAnimationDelay: 0.5
+  finalHeartAnimationDelay: 1
   audioManager: {fileID: 0}
 --- !u!4 &1078202258
 Transform:

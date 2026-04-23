@@ -34,6 +34,13 @@ public class MeteorWaveManager : MonoBehaviour
     [Header("Waves")]
     [SerializeField] private List<MeteorWave> waves = new List<MeteorWave>();
 
+    private AudioManager audioManager;
+    
+    private void Awake()
+    {
+        audioManager = FindFirstObjectByType<AudioManager>();
+    }
+    
     private void Start()
     {
         foreach (MeteorWave wave in waves)

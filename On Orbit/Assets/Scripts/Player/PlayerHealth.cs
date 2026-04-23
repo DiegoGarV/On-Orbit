@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
     private bool isDead = false;
 
     private UIManager uiManager;
+    private AudioManager audioManager;
 
     public int CurrentLives => currentLives;
     public bool IsInvulnerable => isInvulnerable;
@@ -23,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentLives = maxLives;
         uiManager = FindFirstObjectByType<UIManager>();
+        audioManager = FindFirstObjectByType<AudioManager>();
 
         if (playerAnimator == null)
         {
@@ -57,6 +59,11 @@ public class PlayerHealth : MonoBehaviour
             return true;
         }
 
+        if (audioManager != null)
+        {
+            audioManager.PlayPlayerHitSFX();
+        }
+
         StartCoroutine(InvulnerabilityRoutine());
         return true;
     }
@@ -89,6 +96,11 @@ public class PlayerHealth : MonoBehaviour
         if (uiManager != null)
         {
             uiManager.HandlePlayerDefeat();
+        }
+
+        if (audioManager != null)
+        {
+            audioManager.PlayPlayerDeathSFX();
         }
 
         gameObject.SetActive(false);

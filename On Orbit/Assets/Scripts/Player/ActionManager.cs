@@ -20,10 +20,13 @@ public class ActionManager : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float fireTimer;
+    
+    private AudioManager audioManager;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioManager = FindFirstObjectByType<AudioManager>();
     }
 
     private void Update()
@@ -83,6 +86,11 @@ public class ActionManager : MonoBehaviour
         {
             Debug.Log("Falta asignar PlayerBulletPool o uno de los FirePoints.");
             return;
+        }
+
+        if (audioManager != null)
+        {
+            audioManager.PlayPlayerShootSFX();
         }
 
         SpawnBullet(leftFirePoint);

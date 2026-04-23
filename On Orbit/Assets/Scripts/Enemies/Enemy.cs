@@ -31,6 +31,8 @@ public class Enemy : MonoBehaviour
 
     private float oscillationTime = 0f;
 
+    private AudioManager audioManager;
+
     private void Awake()
     {
         if (enemyData == null)
@@ -44,6 +46,8 @@ public class Enemy : MonoBehaviour
 
         if (enemyCollider == null)
             enemyCollider = GetComponent<Collider2D>();
+
+        audioManager = FindFirstObjectByType<AudioManager>();
 
         ApplyData();
         SetVisible(false);
@@ -137,6 +141,10 @@ public class Enemy : MonoBehaviour
         for (int i = 0; i < enemyData.shotsPerBurst; i++)
         {
             FireShot();
+            if (audioManager != null)
+            {
+                audioManager.PlayEnemyShootSFX();
+            }
             yield return new WaitForSeconds(enemyData.timeBetweenShots);
         }
     }
@@ -184,7 +192,12 @@ public class Enemy : MonoBehaviour
 
         currentHealth -= damageAmount;
 
-        Debug.Log($"Enemigo recibió {damageAmount} de daño. Vida restante: {currentHealth}");
+        if (audioManager != null)
+        {
+            audioManager.PlayEnemyHitSFX();
+        }
+
+        // Debug.Log($"Enemigo recibió {damageAmount} de daño. Vida restante: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -194,6 +207,11 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        if (audioManager != null)
+        {
+            audioManager.PlayEnemyDeathSFX();
+        }
+
         StopAllCoroutines();
         Destroy(gameObject);
     }
