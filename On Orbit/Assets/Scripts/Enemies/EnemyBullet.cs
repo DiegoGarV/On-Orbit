@@ -62,12 +62,14 @@ public class EnemyBullet : MonoBehaviour
 
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damage);
+                bool tookDamage = playerHealth.TakeDamage(damage);
+
+                if (tookDamage)
+                {
+                    SpawnHitExplosion(transform.position);
+                    ReturnToPool();
+                }
             }
-
-            SpawnHitExplosion(other.transform.position);
-
-            ReturnToPool();
         }
     }
 
